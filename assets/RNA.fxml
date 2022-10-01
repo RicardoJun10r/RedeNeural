@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <Pane prefWidth="250.0" style="-fx-border-color: #aaa; -fx-background-color: #bbb;" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+   </left>
+   <top>
+      <Pane layoutY="2.0" prefHeight="30.0" prefWidth="500.0" style="-fx-background-color: #fff;" BorderPane.alignment="CENTER">
+         <children>
+            <MenuButton layoutY="2.0" mnemonicParsing="false" prefHeight="20.0" style="-fx-background-color: #fff;" text="Abrir">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Imagem primaria" />
+                <MenuItem mnemonicParsing="false" text="Imagem secundaria" />
+              </items>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </MenuButton>
+            <MenuButton layoutX="60.0" layoutY="2.0" mnemonicParsing="false" prefHeight="20.0" style="-fx-background-color: #fff;" text="Opções">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Taxa de aprendizado">
+                     <graphic>
+                        <TextField prefWidth="50.0" text="0.4" />
+                     </graphic>
+                  </MenuItem>
+                <MenuItem mnemonicParsing="false" text="Tolerancia (%)">
+                     <graphic>
+                        <TextField prefWidth="50.0" text="10" />
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="N° de epocas">
+                     <graphic>
+                        <TextField prefWidth="50.0" text="100" />
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Resultado esperado">
+                     <graphic>
+                        <TextField prefWidth="50.0" promptText="result" />
+                     </graphic>
+                  </MenuItem>
+              </items>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </MenuButton>
+         </children>
+      </Pane>
+   </top>
+   <center>
+      <Pane prefWidth="250.0" style="-fx-border-color: #aaa; -fx-background-color: #bbb;" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
