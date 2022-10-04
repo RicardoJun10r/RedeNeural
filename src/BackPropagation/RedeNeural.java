@@ -458,7 +458,7 @@ public class RedeNeural {
 
     //#endregion
 
-    //#region MÉTODOS ADICIONAIS, afim de testes
+    //#region MÉTODOS ADICIONAIS, a fim de testes
 
     /**
      * Função que mostrará todos os valores, para testes
