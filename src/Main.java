@@ -88,29 +88,48 @@ public class Main{
          
         // REDE NEURAL ( Trabalho )
 
-        Double[][]dados_entrada = {
-                {0.0, 1.0, 0.0, 0.0, 0.0},
-                {1.0, 1.0, 0.0, 0.0, 0.0},
-                {0.0, 1.0, 0.0, 0.0, 0.0},
-                {0.0, 1.0, 0.0, 0.0, 0.0},
-                {1.0, 1.0, 1.0, 0.0, 0.0},
+        /*
+        {
+            1.0, 1.0, 1.0, 0.0, 0.0, 
+            0.0, 0.0, 0.0, 1.0, 0.0, 
+            0.0, 0.0, 1.0, 0.0, 0.0, 
+            0.0, 1.0, 0.0, 0.0, 0.0, 
+            1.0, 1.0, 1.0, 1.0, 0.0
+        },
+
+            { 0.0, 1.0, 0.0, 0.0, 0.0 }, 
+            { 1.0, 1.0, 0.0, 0.0, 0.0 }, 
+            { 0.0, 1.0, 0.0, 0.0, 0.0 }, 
+            { 0.0, 1.0, 0.0, 0.0, 0.0 }, 
+            { 1.0, 1.0, 1.0, 0.0, 0.0 }
+
+        */
+
+        Double[][]dados_entrada = new Double[][] { // 5 x 5 = 25 entradas
+                
+            {
+                1.0, 1.0, 1.0, 0.0, 0.0, 
+                0.0, 0.0, 0.0, 1.0, 0.0, 
+                0.0, 0.0, 1.0, 0.0, 0.0, 
+                0.0, 1.0, 0.0, 0.0, 0.0, 
+                1.0, 1.0, 1.0, 1.0, 0.0
+            }
+                
         };
 
-        Double[]dados_desejados = {
-            1.0, 2.0
+        Double[]dados_desejados = new Double[] {
+            0.0, 1.0, 0.0
        };
 
         // double[]dados_desejados = { Números segundo os nossos nomes
         //      4, 8
         // };
         
-        RedeNeural rede = new RedeNeural(25, 7, 2, FuncaoAtivacao.SIGMOIDE, 0.4, 10, 0.1);
+        RedeNeural rede = new RedeNeural(25, 5, 3, FuncaoAtivacao.SIGMOIDE, 0.4, 2000, 0.1);
 
         rede.setDados(dados_entrada, dados_desejados);
 
         rede.treinar();
-
-        rede.mostrar();
 
     }
 }
