@@ -1,67 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <Pane prefWidth="250.0" style="-fx-border-color: #aaa; -fx-background-color: #bbb;" BorderPane.alignment="CENTER_RIGHT">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
-      </Pane>
-   </left>
-   <top>
-      <Pane layoutY="2.0" prefHeight="30.0" prefWidth="500.0" style="-fx-background-color: #fff;" BorderPane.alignment="CENTER">
-         <children>
-            <MenuButton layoutY="2.0" mnemonicParsing="false" prefHeight="20.0" style="-fx-background-color: #fff;" text="Abrir">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Imagem primaria" />
-                <MenuItem mnemonicParsing="false" text="Imagem secundaria" />
-              </items>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </MenuButton>
-            <MenuButton layoutX="60.0" layoutY="2.0" mnemonicParsing="false" prefHeight="20.0" style="-fx-background-color: #fff;" text="Opções">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Taxa de aprendizado">
-                     <graphic>
-                        <TextField prefWidth="50.0" text="0.4" />
-                     </graphic>
-                  </MenuItem>
-                <MenuItem mnemonicParsing="false" text="Tolerancia (%)">
-                     <graphic>
-                        <TextField prefWidth="50.0" text="10" />
-                     </graphic>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="N° de epocas">
-                     <graphic>
-                        <TextField prefWidth="50.0" text="100" />
-                     </graphic>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Resultado esperado">
-                     <graphic>
-                        <TextField prefWidth="50.0" promptText="result" />
-                     </graphic>
-                  </MenuItem>
-              </items>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </MenuButton>
-         </children>
-      </Pane>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <center>
-      <Pane prefWidth="250.0" style="-fx-border-color: #aaa; -fx-background-color: #bbb;" BorderPane.alignment="CENTER_LEFT">
+      <Pane style="-fx-background-color: #bbb;" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imgPrimaria" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imgSecundaria" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
    </center>
+   <top>
+      <Pane prefHeight="25.0" style="-fx-background-color: #fff;">
+         <children>
+            <MenuBar prefHeight="25.0" style="-fx-background-color: #fff;" BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Arquivo">
+                     <items>
+                      <MenuItem mnemonicParsing="false" onAction="#abrirPrimaria" text="Abrir primaria" />
+                      <MenuItem mnemonicParsing="false" onAction="#abrirSecundaria" text="Abrir secundaria" />
+                        <MenuItem mnemonicParsing="false" onAction="#sair" text="Sair" />
+                     </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Opções">
+                     <items>
+                      <MenuItem mnemonicParsing="false" text="Taxa de aprendizado">
+                           <graphic>
+                              <TextField fx:id="taxaAprend" onAction="#taxaAprend" prefWidth="50.0" text="0.4" />
+                           </graphic>
+                        </MenuItem>
+                      <MenuItem mnemonicParsing="false" text="Tolerancia (%)">
+                           <graphic>
+                              <TextField fx:id="tolerancia" onAction="#tolerancia" prefWidth="50.0" text="10" />
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" text="N° de epocas">
+                           <graphic>
+                              <TextField fx:id="epocas" onAction="#epocas" prefWidth="50.0" text="100" />
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" text="Resultado esperado">
+                           <graphic>
+                              <TextField fx:id="resultEsperado" onAction="#resultEsperado" prefWidth="50.0" promptText="result" />
+                           </graphic>
+                        </MenuItem>
+                     </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Funções">
+                     <items>
+                        <RadioMenuItem fx:id="sigmoide" mnemonicParsing="false" text="SIGMOIDE" />
+                        <RadioMenuItem fx:id="tanh" mnemonicParsing="false" text="TANH" />
+                        <RadioMenuItem fx:id="leakyRelu" mnemonicParsing="false" text="LEAKYRELU" />
+                        <RadioMenuItem fx:id="relu" mnemonicParsing="false" text="RELU" />
+                     </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Tabelas">
+                     <items>
+                        <RadioMenuItem fx:id="tabelaAnd" mnemonicParsing="false" text="AND" />
+                        <RadioMenuItem fx:id="tabelaOr" mnemonicParsing="false" text="OR" />
+                        <RadioMenuItem fx:id="tabelaNot" mnemonicParsing="false" text="NOT" />
+                        <RadioMenuItem fx:id="tabelaXor" mnemonicParsing="false" text="XOR" />
+                     </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <Button layoutX="430.0" layoutY="-1.0" mnemonicParsing="false" onAction="#gerarRNA" prefHeight="15.0" prefWidth="70.0" style="-fx-background-color: #fff;" text="Iniciar">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@play-button.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
+   </top>
 </BorderPane>

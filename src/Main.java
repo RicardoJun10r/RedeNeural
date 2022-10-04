@@ -1,3 +1,11 @@
+import java.io.IOException;
+
+import BackPropagation.FuncaoAtivacao;
+import javafx.scene.Scene;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 /*
     Implemente uma rede neural artificial do tipo Multi-Layer Perceptron (MLP) que
@@ -55,79 +63,38 @@
         resultado mais ou menos igual a 4
  */
 
-import BackPropagation.*;
+public class Main extends Application{
 
-public class Main{
+    private static Stage pS;
 
     public static void main(String[] args) {
-        
-        // REDE NEURAL ( Teste )
-
-        // double[][] dados_entrada2 = {
-        //     new double[]{ 0, 0 },
-        //     new double[]{ 0, 1 },
-        //     new double[]{ 1, 0 },
-        //     new double[]{ 1, 1 }
-        // };
-
-        // double[] dados_desejados2 = new double[] { 0, 1, 1, 1 };
-
-        // Teste teste = new Teste(
-        //     dados_entrada2,
-        //     100
-        // );
-
-        // teste.treinar(dados_desejados2);
-         
-        // REDE NEURAL ( Trabalho )
-
-        /*
-        {
-            1.0, 1.0, 1.0, 0.0, 0.0, 
-            0.0, 0.0, 0.0, 1.0, 0.0, 
-            0.0, 0.0, 1.0, 0.0, 0.0, 
-            0.0, 1.0, 0.0, 0.0, 0.0, 
-            1.0, 1.0, 1.0, 1.0, 0.0
-        },
-
-            { 0.0, 1.0, 0.0, 0.0, 0.0 }, 
-            { 1.0, 1.0, 0.0, 0.0, 0.0 }, 
-            { 0.0, 1.0, 0.0, 0.0, 0.0 }, 
-            { 0.0, 1.0, 0.0, 0.0, 0.0 }, 
-            { 1.0, 1.0, 1.0, 0.0, 0.0 }
-
-                ==NOSSOS NÚMEROS==
-
-            { 1.0, 0.0, 1.0, 0.0, 0.0 }, 
-            { 1.0, 0.0, 1.0, 0.0, 0.0 }, 
-            { 1.0, 1.0, 1.0, 1.0, 0.0 }, 
-            { 0.0, 0.0, 1.0, 0.0, 0.0 }, 
-            { 0.0, 0.0, 1.0, 0.0, 0.0 }
-
-            { 0.0, 1.0, 1.0, 0.0, 0.0 }, 
-            { 1.0, 0.0, 0.0, 1.0, 0.0 }, 
-            { 0.0, 1.0, 1.0, 0.0, 0.0 }, 
-            { 1.0, 0.0, 0.0, 1.0, 0.0 }, 
-            { 0.0, 1.0, 1.0, 0.0, 0.0 }
-
-        */
-
-        Double[][]dados_entrada = new Double[][] {
-            {1.0, 1.0},
-            {1.0, 0.0},
-            {0.0, 1.0},
-            {0.0, 0.0},
-        };
-
-        Double[]dados_desejados = new Double[] {
-            0.0, 1.0, 1.0, 0.0
-       };
-        
-        RedeNeural rede = new RedeNeural(8, 12, 4, FuncaoAtivacao.SIGMOIDE, 0.4, 100, 0.1);
-
-        rede.setDados(dados_entrada, dados_desejados);
-
-        rede.treinar();
-
+        launch(args);
     }
+
+    public static Stage getpS() {
+        return pS;
+    }
+
+    public static void setpS(Stage pS) {
+        Main.pS = pS;
+    }
+
+    @Override
+    public void start(Stage pS) throws Exception {
+        setpS(pS);
+        pS.show();
+        home();
+    }
+
+    public static void home() throws IOException {
+
+        Parent root = FXMLLoader.load(Main.class.getResource("/assets/RNA.fxml"));
+        Scene cena = new Scene(root);
+        pS.setTitle("RNA");
+        pS.setScene(cena);
+    }
+
+    public static void close(){
+        pS.close();
+    } 
 }
