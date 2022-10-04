@@ -59,8 +59,6 @@ public class RedeNeural {
     private Double[] camada_saida;
 
     // PESOS
-    private Integer numero_pesos_entrada_para_oculta;
-    private Integer numero_pesos_oculta_para_saida;
     private Double[][] pesos_entrada_para_oculta;
     private Double[][] pesos_oculta_para_saida;
 
@@ -70,6 +68,8 @@ public class RedeNeural {
     private Integer epoche;                            // Define a taxa de aprendizagem e o erro minimo toleravel
     private Double taxa_aprendizagem;
     private Double erro_minimo;
+
+    private Double[] erro_da_rede;
 
     // DADOS DE ENTRADA E SAIDA
     private Double[][] dados_para_treino;             // Define os dados que serão inicializados e processados
@@ -121,9 +121,6 @@ public class RedeNeural {
         this.epoche = iteracoes;
 
         //----------------------PESOS----------------------
-
-        this.numero_pesos_entrada_para_oculta = numero_camada_entrada*numero_camada_oculta;
-        this.numero_pesos_oculta_para_saida = numero_camada_oculta*numero_camada_saida;
 
         this.pesos_entrada_para_oculta = new Double[numero_camada_oculta][numero_camada_entrada];
         this.pesos_oculta_para_saida = new Double[numero_camada_saida][numero_camada_oculta];
@@ -210,9 +207,15 @@ public class RedeNeural {
 
             this.backpropagation();
 
+            System.out.println("Epoche: " + contador);
+            for(int i = 0; i < this.numero_camada_saida; i++)
+            {
+                System.out.println("Resultado esperado: " + this.dados_desejados[i] + " | Resultado da rede: " + this.camada_saida[i]);
+            }
+            
             contador++;
 
-        } while (contador < this.epoche);
+        } while (contador <= this.epoche);
     }
 
     /**
@@ -261,6 +264,12 @@ public class RedeNeural {
                 case TANH:
                     this.camada_oculta[i] = this.tanh(this.camada_oculta[i]);
                     break;
+                case LEAKYRELU:
+                    this.camada_oculta[i] = this.leakyrelu(this.camada_oculta[i]);
+                    break;
+                case RELU:
+                    this.camada_oculta[i] = this.relu(this.camada_oculta[i]);
+                    break;
                 default:
                     this.camada_oculta[i] = 0.0;
                     System.out.println("ERRO");
@@ -289,7 +298,13 @@ public class RedeNeural {
                     this.camada_saida[i] = this.sigmoide(this.camada_saida[i]);
                     break;
                 case TANH:
-                    this.camada_saida[i] = tanh(this.camada_saida[i]);
+                    this.camada_saida[i] = this.tanh(this.camada_saida[i]);
+                    break;
+                case LEAKYRELU:
+                    this.camada_saida[i] = this.leakyrelu(this.camada_saida[i]);
+                    break;
+                case RELU:
+                    this.camada_saida[i] = this.relu(this.camada_saida[i]);
                     break;
                 default:
                     this.camada_saida[i] = 0.0;
@@ -299,26 +314,107 @@ public class RedeNeural {
         }
     }
 
-    private Double calcularErro(Double numero)
+    private void calcularErro(Double[]numero)
     {
-        Double erro_da_rede;
+        Double[]erro_da_rede = new Double[numero.length];
 
-        erro_da_rede = Math.pow(numero, 2)/2;
+        for(int i = 0; i  < numero.length; i++)
+            erro_da_rede[i] = 0.0;
 
-        return erro_da_rede;
+        for(int i = 0; i < numero.length; i++)
+            erro_da_rede[i] = Math.pow(numero[i], 2)/2;
+
+        this.erro_da_rede = erro_da_rede;
     }
 
     private void backpropagation()
     {
-        Double erro;
+        Double [] erroSaida = new Double[this.numero_camada_saida];
+
+        for(int i = 0; i < this.numero_camada_saida; i++)
+            erroSaida[i] = 0.0;
 
         for(int i = 0; i < this.numero_camada_saida; i++)
         {
-            erro = (this.dados_desejados[i] - this.camada_saida[i])*this.derivadaSigmoide(this.camada_saida[i]);
+            switch(this.funcaoAtivacao)
+            {
+                case SIGMOIDE:
+                    erroSaida[i] = (this.dados_desejados[i] - this.camada_saida[i])*this.derivadaSigmoide(this.camada_saida[i]);
+                    break;
+                case TANH:
+                    erroSaida[i] = (this.dados_desejados[i] - this.camada_saida[i])*this.derivadaTahn(this.camada_saida[i]);
+                    break;
+                case LEAKYRELU:
+                    erroSaida[i] = (this.dados_desejados[i] - this.camada_saida[i])*this.derivadaLeakyrelu(this.camada_saida[i]);
+                    break;
+                case RELU:
+                    erroSaida[i] = (this.dados_desejados[i] - this.camada_saida[i])*this.derivadaRelu(this.camada_saida[i]);
+                    break;
+                default:
+                    erroSaida[i] = 0.0;
+                    System.out.println("ERRO NO BACKPROPAGATION");
+                    break;
+            }
         }
 
+        calcularErro(erroSaida);
         
+        this.ajustarPesosSaida(erroSaida);
 
+        Double[] erroOculta = new Double[this.numero_camada_oculta+1];
+        for(int i = 0; i < this.numero_camada_oculta; i++)
+            erroOculta[i] = 0.0;
+
+        for(int i = 0; i < this.numero_camada_saida; i++)
+        {
+            for(int j = 0; j < this.numero_camada_oculta; j++)
+            {
+                switch(this.funcaoAtivacao)
+                {
+                case SIGMOIDE:
+                    erroOculta[j] = this.derivadaSigmoide(this.camada_oculta[j]) * erroSaida[i] * this.camada_oculta[j];
+                    break;
+                case TANH:
+                    erroOculta[j] = this.derivadaTahn(this.camada_oculta[j]) * erroSaida[i] * this.camada_oculta[j];
+                    break;
+                case LEAKYRELU:
+                    erroOculta[j] = this.derivadaLeakyrelu(this.camada_oculta[j]) * erroSaida[i] * this.camada_oculta[j];
+                    break;
+                case RELU:
+                    erroOculta[j] = this.derivadaRelu(this.camada_oculta[j]) * erroSaida[i] * this.camada_oculta[j];
+                    break;
+                default:
+                    erroSaida[i] = 0.0;
+                    System.out.println("ERRO NO BACKPROPAGATION");
+                    break;
+                }
+            }
+        }
+
+        this.ajustarPesosOculta(erroOculta);
+
+    }
+
+    private void ajustarPesosSaida(Double[] erro)
+    {
+        for(int i = 0; i < this.numero_camada_saida; i++)
+        {
+            for(int j = 0; j < this.numero_camada_oculta; j++)
+            {
+                this.pesos_oculta_para_saida[i][j] = this.pesos_oculta_para_saida[i][j] + this.taxa_aprendizagem*erro[i]*this.camada_saida[i];
+            }
+        }
+    }
+
+    private void ajustarPesosOculta(Double[]erro)
+    {
+        for(int i = 0; i < this.numero_camada_oculta; i++)
+        {
+            for(int j = 0; j < this.numero_camada_entrada; j++)
+            {
+                this.pesos_entrada_para_oculta[i][j] = this.pesos_entrada_para_oculta[i][j] + this.taxa_aprendizagem*erro[i]*this.camada_oculta[i];
+            }
+        }
     }
 
     //#endregion
@@ -339,6 +435,26 @@ public class RedeNeural {
     {
         return (2/(1 + Math.exp(-2*soma))-1);
     }
+
+    private Double derivadaTahn(Double x) {
+		return 1- Math.pow(this.tanh(x), 2);
+	}
+
+    private Double leakyrelu(Double x) {
+		return x > 0 ? x : 0.01 * x;
+	}
+
+    private Double derivadaLeakyrelu(Double x) {
+		return x > 0 ? 1 : 0.01;
+	}
+
+    private Double relu(Double x) {
+		return x > 0 ? x : 0;
+	}
+
+    private Double derivadaRelu(Double x) {
+		return x > 0 ? 1 : 0.0;
+	}
 
     //#endregion
 
