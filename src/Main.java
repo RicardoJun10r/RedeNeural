@@ -78,13 +78,6 @@ public class Main{
         // );
 
         // teste.treinar(dados_desejados2);
-
-        //       input 2
-        //     {1},{1},{1},{0},
-        //     {0},{0},{0},{1},
-        //     {0},{0},{1},{0},
-        //     {0},{1},{0},{0},
-        //     {1},{1},{1},{1},
          
         // REDE NEURAL ( Trabalho )
 
@@ -119,25 +112,18 @@ public class Main{
 
         */
 
-        Double[][]dados_entrada = new Double[][] { // 5 x 5 = 25 entradas
-                
-            { 0.0, 1.0, 1.0, 0.0, 0.0 }, 
-            { 1.0, 0.0, 0.0, 1.0, 0.0 }, 
-            { 0.0, 1.0, 1.0, 0.0, 0.0 }, 
-            { 1.0, 0.0, 0.0, 1.0, 0.0 }, 
-            { 0.0, 1.0, 1.0, 0.0, 0.0 }
-                
+        Double[][]dados_entrada = new Double[][] {
+            {1.0, 1.0},
+            {1.0, 0.0},
+            {0.0, 1.0},
+            {0.0, 0.0},
         };
 
         Double[]dados_desejados = new Double[] {
-            0.0, 1.0, 0.0
+            0.0, 1.0, 1.0, 0.0
        };
-
-        // double[]dados_desejados = { Números segundo os nossos nomes
-        //      4, 8
-        // };
         
-        RedeNeural rede = new RedeNeural(25, 5, 3, FuncaoAtivacao.SIGMOIDE, 0.4, 2000, 0.1);
+        RedeNeural rede = new RedeNeural(8, 12, 4, FuncaoAtivacao.SIGMOIDE, 0.4, 100, 0.1);
 
         rede.setDados(dados_entrada, dados_desejados);
 
