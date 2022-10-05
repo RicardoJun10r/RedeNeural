@@ -54,6 +54,12 @@ import javafx.scene.image.ImageView;
 public class Controller implements Initializable{
 
     @FXML
+    private TextField entradaSecundaria;
+    
+    @FXML
+    private TextField entradaPrimaria;
+    
+    @FXML
     private RadioMenuItem tabelaNot;
     
     @FXML
@@ -129,6 +135,8 @@ public class Controller implements Initializable{
     private RedeNeural rna2;//rede neural da iamgem secundaria
     
     private Double[] saidas;
+    private Double[] entradasPri;
+    private Double[] entradasSec;
     private int iteracoes;
     private Double erroMinimo;
     private Double aprendizado;
@@ -208,6 +216,28 @@ public class Controller implements Initializable{
     @FXML
     void epocas(ActionEvent event) {
     	iteracoes = Integer.valueOf(epocas.getText());
+    }
+
+    @FXML
+    void entradaPrimaria(ActionEvent event) {
+    	String [] tmp = entradaPrimaria.getText().split( "," );
+    	entradasPri = new Double[ tmp.length ];
+    	
+    	for(int i = 0; i < tmp.length; i++) {
+    		entradasPri[i] = Double.valueOf( tmp[i] );
+    	}
+    	entradas1 = entradasPri.length;
+    }
+    
+    @FXML
+    void entradaSecundaria(ActionEvent event) {
+    	String [] tmp = entradaSecundaria.getText().split( "," );
+    	entradasSec = new Double[ tmp.length ];
+    	
+    	for(int i = 0; i < tmp.length; i++) {
+    		entradasSec[i] = Double.valueOf( tmp[i] );
+    	}
+    	entradas2 = entradasSec.length;
     }
 
     @FXML

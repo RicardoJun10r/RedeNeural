@@ -81,6 +81,20 @@
                         <RadioMenuItem fx:id="tabelaXor" mnemonicParsing="false" text="XOR" />
                      </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="Entradas">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Rede primaria">
+                           <graphic>
+                              <TextField fx:id="entradaPrimaria" onAction="#entradaPrimaria" prefWidth="60.0" promptText="entradas" />
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" text="Rede secundaria">
+                           <graphic>
+                              <TextField fx:id="entradaSecundaria" onAction="#entradaSecundaria" prefWidth="60.0" promptText="entradas" />
+                           </graphic>
+                        </MenuItem>
+                     </items>
+                  </Menu>
                   <Menu mnemonicParsing="false" text="Nº da oculta">
                      <items>
                         <CheckMenuItem fx:id="usarOcultaPadrao" mnemonicParsing="false" selected="true" text="Usar padrão" />
