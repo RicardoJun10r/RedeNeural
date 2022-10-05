@@ -9,6 +9,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
@@ -52,6 +53,9 @@ import javafx.scene.image.ImageView;
         */
 
 public class Controller implements Initializable{
+
+	@FXML
+    private Button botaoStart;
 
     @FXML
     private TextField entradaSecundaria;
@@ -195,6 +199,10 @@ public class Controller implements Initializable{
     @FXML
     void gerarRNA(ActionEvent event) {
     	
+    	//inicia como treino
+    	if(botaoStart.getText().compareTo("Treinar") == 0) {
+    		botaoStart.setText("Iniciar");
+    	}
     	entradas1 = (int)(imgPrimaria.getFitWidth() * imgPrimaria.getFitHeight());
     	entradas2 = (int)(imgSecundaria.getFitWidth() * imgSecundaria.getFitHeight());
     	
@@ -206,6 +214,11 @@ public class Controller implements Initializable{
     @FXML
     void taxaAprend(ActionEvent event) {
     	aprendizado = Double.valueOf( taxaAprend.getText() );
+    }
+    
+    @FXML
+    void resetar(ActionEvent event) {
+    	botaoStart.setText("Treinar");
     }
 
     @FXML

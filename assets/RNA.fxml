@@ -127,7 +127,7 @@
                   </Menu>
               </menus>
             </MenuBar>
-            <Button layoutX="730.0" layoutY="-1.0" mnemonicParsing="false" onAction="#gerarRNA" prefHeight="15.0" prefWidth="70.0" style="-fx-background-color: #fff;" text="Iniciar">
+            <Button fx:id="botaoStart" layoutX="725.0" layoutY="-1.0" mnemonicParsing="false" onAction="#gerarRNA" prefHeight="15.0" prefWidth="75.0" style="-fx-background-color: #fff;" text="Treinar">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -141,6 +141,14 @@
                      </image>
                   </ImageView>
                </graphic>
+            </Button>
+            <Button layoutX="650.0" layoutY="-1.0" mnemonicParsing="false" onAction="#resetar" prefHeight="15.0" prefWidth="70.0" style="-fx-background-color: #fff;" text="Resetar">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </Button>
          </children>
       </Pane>
