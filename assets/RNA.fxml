@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <center>
       <Pane style="-fx-background-color: #bbb;" BorderPane.alignment="CENTER_LEFT">
          <children>
@@ -68,9 +81,39 @@
                         <RadioMenuItem fx:id="tabelaXor" mnemonicParsing="false" text="XOR" />
                      </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="Nº da oculta">
+                     <items>
+                        <CheckMenuItem fx:id="usarOcultaPadrao" mnemonicParsing="false" selected="true" text="Usar padrão" />
+                        <MenuItem fx:id="itemValorOcultaPri" disable="true" mnemonicParsing="false" text="valor primária">
+                           <graphic>
+                              <TextField fx:id="qntCamadaOcultaPri" prefWidth="40.0" />
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="itemValorOcultaSec" disable="true" mnemonicParsing="false" text="valor secundária">
+                           <graphic>
+                              <TextField fx:id="qntCamadaOcultaSec" prefWidth="40.0" />
+                           </graphic>
+                        </MenuItem>
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Nº da saída">
+                     <items>
+                        <CheckMenuItem fx:id="usarSaidaPadrao" mnemonicParsing="false" selected="true" text="Usar padrão" />
+                        <MenuItem fx:id="itemValorSaidaPri" disable="true" mnemonicParsing="false" text="valor primária">
+                           <graphic>
+                              <TextField fx:id="qntCamadaSaidaPri" prefWidth="40.0" />
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="itemValorSaidaSec" disable="true" mnemonicParsing="false" text=" valor secundária">
+                           <graphic>
+                              <TextField fx:id="qntCamadaSaidaSec" prefWidth="40.0" />
+                           </graphic>
+                        </MenuItem>
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
-            <Button layoutX="430.0" layoutY="-1.0" mnemonicParsing="false" onAction="#gerarRNA" prefHeight="15.0" prefWidth="70.0" style="-fx-background-color: #fff;" text="Iniciar">
+            <Button layoutX="730.0" layoutY="-1.0" mnemonicParsing="false" onAction="#gerarRNA" prefHeight="15.0" prefWidth="70.0" style="-fx-background-color: #fff;" text="Iniciar">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
