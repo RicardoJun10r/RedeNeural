@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "Main",
             "projectName": "RedeNeural_5ebcf265",
-            "vmArgs": "--module-path \"/javafx-lib\" --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path=/home/ricardojunior/Downloads/openjfx-19_linux-x64_bin-sdk/javafx-sdk-19/lib/ --add-modules javafx.controls,javafx.fxml"
 
         },
         {
@@ -19,8 +19,8 @@
             "request": "launch",
             "mainClass": "Main",
             "projectName": "RedeNeural",
-            "vmArgs": "--module-path \"/javafx-lib\" --add-modules javafx.controls,javafx.fxml"
-
+            "vmArgs": "--module-path=/home/ricardojunior/Downloads/openjfx-19_linux-x64_bin-sdk/javafx-sdk-19/lib/ --add-modules javafx.controls,javafx.fxml"
+            
         },
         {
             "type": "java",
@@ -34,7 +34,7 @@
             "request": "launch",
             "mainClass": "Main",
             "projectName": "RedeNeural_ef1a1373",
-            "vmArgs": "--module-path \"/javafx-lib\" --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path=/home/ricardojunior/Downloads/openjfx-19_linux-x64_bin-sdk/javafx-sdk-19/lib/ --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }

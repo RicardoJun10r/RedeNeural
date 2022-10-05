@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 
 import BackPropagation.FuncaoAtivacao;
@@ -62,7 +63,7 @@ import javafx.stage.Stage;
         resultado / 3
         resultado mais ou menos igual a 4
  */
-
+/*
 public class Main extends Application{
 
     private static Stage pS;
@@ -97,4 +98,4 @@ public class Main extends Application{
     public static void close(){
         pS.close();
     } 
-}
+}*/

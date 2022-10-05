@@ -9,6 +9,9 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -48,11 +51,50 @@ import javafx.scene.image.ImageView;
             { 0.0, 1.0, 1.0, 0.0, 0.0 }
 
         */
-
+/*
 public class Controller implements Initializable{
 
+	@FXML
+    private Button botaoStart;
+
+    @FXML
+    private TextField entradaSecundaria;
+    
+    @FXML
+    private TextField entradaPrimaria;
+    
     @FXML
     private RadioMenuItem tabelaNot;
+    
+    @FXML
+    private TextField qntCamadaOcultaPri;
+    
+    @FXML
+    private TextField qntCamadaOcultaSec;
+    
+    @FXML
+    private MenuItem itemValorOcultaPri;
+    
+    @FXML
+    private MenuItem itemValorOcultaSec;
+    
+    @FXML
+    private TextField qntCamadaSaidaPri;
+    
+    @FXML
+    private TextField qntCamadaSaidaSec;
+    
+    @FXML
+    private MenuItem itemValorSaidaPri;
+    
+    @FXML
+    private MenuItem itemValorSaidaSec;
+    
+    @FXML
+    private CheckMenuItem usarSaidaPadrao;
+
+    @FXML
+    private CheckMenuItem usarOcultaPadrao;
 
     @FXML
     private ImageView imgSecundaria;
@@ -97,10 +139,20 @@ public class Controller implements Initializable{
     private RedeNeural rna2;//rede neural da iamgem secundaria
     
     private Double[] saidas;
+    private Double[] entradasPri;
+    private Double[] entradasSec;
     private int iteracoes;
     private Double erroMinimo;
     private Double aprendizado;
-
+    private int oculta1;
+    private int oculta2;
+    private int nSaidas1;
+    private int nSaidas2;
+    private int entradas1;
+    private int entradas2;
+    private FuncaoAtivacao funcao;
+    private Tabela tabelaUsada;
+    
     @FXML
     void abrirPrimaria(ActionEvent event){
         JFileChooser fileChooser = new JFileChooser();
@@ -146,13 +198,27 @@ public class Controller implements Initializable{
 
     @FXML
     void gerarRNA(ActionEvent event) {
-    	//rna1 = new RedeNeural();
-    	//rna2 = new RedeNeural();
+    	
+    	//inicia como treino
+    	if(botaoStart.getText().compareTo("Treinar") == 0) {
+    		botaoStart.setText("Iniciar");
+    	}
+    	entradas1 = (int)(imgPrimaria.getFitWidth() * imgPrimaria.getFitHeight());
+    	entradas2 = (int)(imgSecundaria.getFitWidth() * imgSecundaria.getFitHeight());
+    	
+    	rna1 = new RedeNeural(entradas1, oculta1, nSaidas1, funcao, aprendizado, iteracoes, erroMinimo);
+    	
+    	rna2 = new RedeNeural(entradas2, oculta2, nSaidas2, funcao, aprendizado, iteracoes, erroMinimo);
     }
 
     @FXML
     void taxaAprend(ActionEvent event) {
     	aprendizado = Double.valueOf( taxaAprend.getText() );
+    }
+    
+    @FXML
+    void resetar(ActionEvent event) {
+    	botaoStart.setText("Treinar");
     }
 
     @FXML
@@ -166,32 +232,152 @@ public class Controller implements Initializable{
     }
 
     @FXML
+    void entradaPrimaria(ActionEvent event) {
+    	String [] tmp = entradaPrimaria.getText().split( "," );
+    	entradasPri = new Double[ tmp.length ];
+    	
+    	for(int i = 0; i < tmp.length; i++) {
+    		entradasPri[i] = Double.valueOf( tmp[i] );
+    	}
+    	entradas1 = entradasPri.length;
+    }
+    
+    @FXML
+    void entradaSecundaria(ActionEvent event) {
+    	String [] tmp = entradaSecundaria.getText().split( "," );
+    	entradasSec = new Double[ tmp.length ];
+    	
+    	for(int i = 0; i < tmp.length; i++) {
+    		entradasSec[i] = Double.valueOf( tmp[i] );
+    	}
+    	entradas2 = entradasSec.length;
+    }
+
+    @FXML
     void resultEsperado(ActionEvent event) {
     	String [] tmp = resultEsperado.getText().split( "," );
+    	saidas = new Double[ tmp.length ];
     	
     	for(int i = 0; i < tmp.length; i++) {
     		saidas[i] = Double.valueOf( tmp[i] );
     	}
     }
-
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*Double[][]dados_entrada = new Double[][] {
-            {1.0, 1.0},
-            {1.0, 0.0},
-            {0.0, 1.0},
-            {0.0, 0.0},
-        };
+    	usarOcultaPadrao.setOnAction( event -> {
+        	
+        	if( usarOcultaPadrao.isSelected() ) {
+        		
+        		itemValorOcultaPri.setDisable( true );
+        		itemValorOcultaSec.setDisable( true );
+        		
+        		if( !qntCamadaOcultaPri.getText().isEmpty() && !qntCamadaOcultaSec.getText().isEmpty() ) {
+            		oculta1 = Integer.valueOf( qntCamadaOcultaPri.getText() );
+            		oculta2 = Integer.valueOf( qntCamadaOcultaSec.getText() );
+        		}
+        	
+        	}
+        	else {
+        		
+        		itemValorOcultaPri.setDisable( false );
+        		itemValorOcultaSec.setDisable( false );
+        		
+        		oculta1 = (int)Math.sqrt(entradas1 + nSaidas1);
+            	oculta2 = (int)Math.sqrt(entradas2 + nSaidas2);
+            	
+        	}
+        });
+    	
+    	usarSaidaPadrao.setOnAction( event -> {
+        	
+        	if( usarSaidaPadrao.isSelected() ) {
+        		
+        		itemValorSaidaPri.setDisable( true );
+        		itemValorSaidaSec.setDisable( true );
+        		
+        		if( !qntCamadaSaidaPri.getText().isEmpty() && !qntCamadaSaidaSec.getText().isEmpty()) {
+        			nSaidas1 = Integer.valueOf( qntCamadaSaidaPri.getText() );
+            		nSaidas2 = Integer.valueOf( qntCamadaSaidaSec.getText() );
+        		}
+        		
+        	}
+        	else {
+        		
+        		itemValorSaidaPri.setDisable( false );
+        		itemValorSaidaSec.setDisable( false );
+        		
+        		if( saidas != null )
+        			nSaidas1 = nSaidas2 = saidas.length;
+        		
+        	}
+        });
+    	
+    	//funcoes de ativacao
+    	sigmoide.setOnAction( event -> {
+    		sigmoide.setSelected( true );
+    		tanh.setSelected( false );
+    		relu.setSelected( false );
+    		leakyRelu.setSelected( false );
+    		funcao = FuncaoAtivacao.SIGMOIDE;
+    	});
+    	
+    	tanh.setOnAction( event -> {
+    		sigmoide.setSelected( false );
+    		tanh.setSelected( true );
+    		relu.setSelected( false );
+    		leakyRelu.setSelected( false );
+    		funcao = FuncaoAtivacao.TANH;
+    	});
 
-        Double[]dados_desejados = new Double[] {
-            0.0, 1.0, 1.0, 0.0
-       };
-        
-        RedeNeural rede = new RedeNeural(8, 12, 4, FuncaoAtivacao.SIGMOIDE, 0.4, 100, 0.1);
-
-        rede.setDados(dados_entrada, dados_desejados);
-
-        rede.treinar();*/
+    	relu.setOnAction( event -> {
+    		sigmoide.setSelected( false );
+    		tanh.setSelected( false );
+    		relu.setSelected( true );
+    		leakyRelu.setSelected( false );
+    		funcao = FuncaoAtivacao.RELU;
+    	});
+    	
+    	leakyRelu.setOnAction( event -> {
+    		sigmoide.setSelected( false );
+    		tanh.setSelected( false );
+    		relu.setSelected( false );
+    		leakyRelu.setSelected( true );
+    		funcao = FuncaoAtivacao.LEAKYRELU;
+    	});
+    	
+    	//tabelas usadas
+    	tabelaAnd.setOnAction( event -> {
+    		tabelaAnd.setSelected( true );
+    		tabelaOr.setSelected( false );
+    		tabelaNot.setSelected( false );
+    		tabelaXor.setSelected( false );
+    		tabelaUsada = Tabela.AND;
+    	});
+    	
+    	tabelaOr.setOnAction( event -> {
+    		tabelaAnd.setSelected( false );
+    		tabelaOr.setSelected( true );
+    		tabelaNot.setSelected( false );
+    		tabelaXor.setSelected( false );
+    		tabelaUsada = Tabela.OR;
+    	});
+    	
+    	tabelaNot.setOnAction( event -> {
+    		tabelaAnd.setSelected( false );
+    		tabelaOr.setSelected( false );
+    		tabelaNot.setSelected( true );
+    		tabelaXor.setSelected( false );
+    		tabelaUsada = Tabela.NOT;
+    	});
+    	
+    	tabelaXor.setOnAction( event -> {
+    		tabelaAnd.setSelected( false );
+    		tabelaOr.setSelected( false );
+    		tabelaNot.setSelected( false );
+    		tabelaXor.setSelected( true );
+    		tabelaUsada = Tabela.XOR;
+    	});
     }
     
     @FXML
@@ -200,3 +386,4 @@ public class Controller implements Initializable{
     }
 
 }
+*/
